@@ -23,7 +23,7 @@ func main() {
 	}
 	wordSearch = append(wordSearch, row)
 
-	part1Search(wordSearch)
+	part1Search(wordSearch, "XMAS")
 
 	part2Search(wordSearch)
 }

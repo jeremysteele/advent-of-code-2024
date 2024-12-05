@@ -2,13 +2,24 @@ package main
 
 import "fmt"
 
-func part1Search(wordSearch [][]rune) {
+var searchDirections = [][]int{
+	{0, -1},  //Up
+	{0, 1},   //Down
+	{-1, 0},  //Left
+	{1, 0},   //Right
+	{-1, -1}, // Up Left
+	{1, -1},  //Up Right
+	{-1, 1},  // Down left
+	{1, 1},   // Down right
+}
+
+func part1Search(wordSearch [][]rune, word string) {
 	tally := 0
 
 	for y, yChars := range wordSearch {
 		for x, xChar := range yChars {
-			if xChar == 'X' {
-				tally += searchFromPos(wordSearch, x, y)
+			if xChar == rune(word[0]) {
+				tally += searchFromPos(wordSearch, word, x, y)
 			}
 		}
 	}
@@ -16,131 +27,38 @@ func part1Search(wordSearch [][]rune) {
 	fmt.Printf("Total: %d\n", tally)
 }
 
-func searchLeft(wordSearch [][]rune, x int, y int) int {
+func searchFromPos(wordSearch [][]rune, word string, x int, y int) int {
 	tally := 0
 
-	// Can we even search left?
-	if x-3 < 0 {
-		return 0
-	}
+	boardWidth := len(wordSearch[y])
+	boardHeight := len(wordSearch)
 
-	//Left
-	if wordSearch[y][x-1] == 'M' {
-		if wordSearch[y][x-2] == 'A' {
-			if wordSearch[y][x-3] == 'S' {
-				tally++
+	for _, d := range searchDirections {
+		match := true
+
+		for i, c := range word {
+			searchX := x + d[0]*i
+			searchY := y + d[1]*i
+
+			// Constraint check
+			if searchX < 0 || searchX >= boardWidth {
+				match = false
+				break
+			} else if searchY < 0 || searchY >= boardHeight {
+				match = false
+				break
+			}
+
+			if c != wordSearch[searchY][searchX] {
+				match = false
+				break
 			}
 		}
-	}
 
-	// Left Up
-	if y-3 >= 0 {
-		if wordSearch[y-1][x-1] == 'M' {
-			if wordSearch[y-2][x-2] == 'A' {
-				if wordSearch[y-3][x-3] == 'S' {
-					tally++
-				}
-			}
+		if match {
+			tally++
 		}
 	}
-
-	// Left Down
-	if y+3 < len(wordSearch) {
-		if wordSearch[y+1][x-1] == 'M' {
-			if wordSearch[y+2][x-2] == 'A' {
-				if wordSearch[y+3][x-3] == 'S' {
-					tally++
-				}
-			}
-		}
-	}
-
-	return tally
-}
-
-func searchRight(wordSearch [][]rune, x int, y int) int {
-	tally := 0
-
-	// Can we even search left?
-	if x+3 >= len(wordSearch[y]) {
-		return 0
-	}
-
-	// Right
-	if wordSearch[y][x+1] == 'M' {
-		if wordSearch[y][x+2] == 'A' {
-			if wordSearch[y][x+3] == 'S' {
-				tally++
-			}
-		}
-	}
-
-	// Right Up
-	if y-3 >= 0 {
-		if wordSearch[y-1][x+1] == 'M' {
-			if wordSearch[y-2][x+2] == 'A' {
-				if wordSearch[y-3][x+3] == 'S' {
-					tally++
-				}
-			}
-		}
-	}
-
-	// Right Down
-	if y+3 < len(wordSearch) {
-		if wordSearch[y+1][x+1] == 'M' {
-			if wordSearch[y+2][x+2] == 'A' {
-				if wordSearch[y+3][x+3] == 'S' {
-					tally++
-				}
-			}
-		}
-	}
-
-	return tally
-}
-
-func searchUp(wordSearch [][]rune, x int, y int) int {
-	// Can we search up?
-	if y-3 < 0 {
-		return 0
-	}
-
-	if wordSearch[y-1][x] == 'M' {
-		if wordSearch[y-2][x] == 'A' {
-			if wordSearch[y-3][x] == 'S' {
-				return 1
-			}
-		}
-	}
-
-	return 0
-}
-
-func searchDown(wordSearch [][]rune, x int, y int) int {
-	// Can we search down?
-	if y+3 >= len(wordSearch) {
-		return 0
-	}
-
-	if wordSearch[y+1][x] == 'M' {
-		if wordSearch[y+2][x] == 'A' {
-			if wordSearch[y+3][x] == 'S' {
-				return 1
-			}
-		}
-	}
-
-	return 0
-}
-
-func searchFromPos(wordSearch [][]rune, x int, y int) int {
-	tally := 0
-
-	tally += searchLeft(wordSearch, x, y)
-	tally += searchRight(wordSearch, x, y)
-	tally += searchUp(wordSearch, x, y)
-	tally += searchDown(wordSearch, x, y)
 
 	fmt.Printf("%d, %d: %d\n", x, y, tally)
 
