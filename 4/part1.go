@@ -24,6 +24,7 @@ func searchLeft(wordSearch [][]rune, x int, y int) int {
 		return 0
 	}
 
+	//Left
 	if wordSearch[y][x-1] == 'M' {
 		if wordSearch[y][x-2] == 'A' {
 			if wordSearch[y][x-3] == 'S' {
@@ -32,6 +33,7 @@ func searchLeft(wordSearch [][]rune, x int, y int) int {
 		}
 	}
 
+	// Left Up
 	if y-3 >= 0 {
 		if wordSearch[y-1][x-1] == 'M' {
 			if wordSearch[y-2][x-2] == 'A' {
@@ -42,6 +44,7 @@ func searchLeft(wordSearch [][]rune, x int, y int) int {
 		}
 	}
 
+	// Left Down
 	if y+3 < len(wordSearch) {
 		if wordSearch[y+1][x-1] == 'M' {
 			if wordSearch[y+2][x-2] == 'A' {
@@ -63,6 +66,7 @@ func searchRight(wordSearch [][]rune, x int, y int) int {
 		return 0
 	}
 
+	// Right
 	if wordSearch[y][x+1] == 'M' {
 		if wordSearch[y][x+2] == 'A' {
 			if wordSearch[y][x+3] == 'S' {
@@ -71,6 +75,7 @@ func searchRight(wordSearch [][]rune, x int, y int) int {
 		}
 	}
 
+	// Right Up
 	if y-3 >= 0 {
 		if wordSearch[y-1][x+1] == 'M' {
 			if wordSearch[y-2][x+2] == 'A' {
@@ -81,6 +86,7 @@ func searchRight(wordSearch [][]rune, x int, y int) int {
 		}
 	}
 
+	// Right Down
 	if y+3 < len(wordSearch) {
 		if wordSearch[y+1][x+1] == 'M' {
 			if wordSearch[y+2][x+2] == 'A' {
