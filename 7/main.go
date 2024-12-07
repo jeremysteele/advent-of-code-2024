@@ -47,4 +47,19 @@ func main() {
 	}
 
 	part1Process(entries)
+	part2Process(entries)
+}
+
+func generateCombination(base string, ops string, maxLength int) []string {
+	var combos []string
+
+	if len(base) == maxLength {
+		return []string{base}
+	}
+
+	for _, o := range ops {
+		combos = append(combos, generateCombination(base+string(o), ops, maxLength)...)
+	}
+
+	return combos
 }

@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
-const part1Operators = "+*"
+// I am lazy, using single pipe for the concat because I DO WHAT I WANT
+const part2Operators = "+*|"
 
 /*func debugOutput(data []int64, ops string) string {
 	output := ""
@@ -20,8 +22,8 @@ const part1Operators = "+*"
 	return output
 }*/
 
-func part1ProcessLine(result int64, data []int64) bool {
-	operatorCombos := generateCombination("", part1Operators, len(data)-1)
+func part2ProcessLine(result int64, data []int64) bool {
+	operatorCombos := generateCombination("", part2Operators, len(data)-1)
 
 	for _, combo := range operatorCombos {
 		total := int64(0)
@@ -37,6 +39,12 @@ func part1ProcessLine(result int64, data []int64) bool {
 				total += num
 			case '*':
 				total *= num
+			case '|':
+				calc, err := strconv.ParseInt(fmt.Sprintf("%d%d", total, num), 10, strconv.IntSize)
+				if err != nil {
+					panic(err)
+				}
+				total = int64(calc)
 			}
 		}
 
@@ -49,11 +57,11 @@ func part1ProcessLine(result int64, data []int64) bool {
 	return false
 }
 
-func part1Process(entries []entry) {
+func part2Process(entries []entry) {
 	total := int64(0)
 
 	for _, e := range entries {
-		if part1ProcessLine(e.result, e.values) {
+		if part2ProcessLine(e.result, e.values) {
 			total += e.result
 		}
 	}
